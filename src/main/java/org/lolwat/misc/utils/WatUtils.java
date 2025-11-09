@@ -48,14 +48,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class WatUtils {
-    private static final HashMap<String, String> webhookUrls = new HashMap<String, String>() {{
-        put("lolwat", "https://discord.com/api/webhooks/1295107274628399114/RIXif-CYVpuZ2lJxhauRwQXfybL3A792rVdtJdmIA5cdxQeAETXjGh8zu3aGfrl4ClAb");
-        put("ronscapes", "https://discord.com/api/webhooks/1295107274628399114/RIXif-CYVpuZ2lJxhauRwQXfybL3A792rVdtJdmIA5cdxQeAETXjGh8zu3aGfrl4ClAb");
-    }};
-
     private static long lastCallTime = 0;
     private static HashMap<String, Integer> itemPrices;
-    private static double multiplier = 1.2;
+    private static final double multiplier = 1.2;
 
     public static void sendWebhook(String message, boolean error) {
         String webhookUrl = "https://api.botbuddy.net/ws_discord.php";
@@ -67,7 +62,7 @@ public class WatUtils {
     }
 
     public static void sendToDiscordApi(String message, String webhookUrl, boolean error) throws IOException {
-        if(Client.getForumUser() == null || !webhookUrls.containsKey(Client.getForumUser().getUsername().toLowerCase()))
+        if(Client.getForumUser() == null)
             return;
 
         URL url = new URL(webhookUrl);
@@ -83,7 +78,7 @@ public class WatUtils {
 
         JsonObject payload = new JsonObject();
         payload.add("embeds", new Gson().toJsonTree(new JsonObject[]{embed}));
-        payload.addProperty("webhook_url", "https://discord.com/api/webhooks/1279900015459962944/NLEYrzMG_jAj5SbSIXF3AevVj7VL9xvq20WLh7JIFc5JK6lb-qCA9_KMDrIg_RdKDID_");
+        payload.addProperty("webhook_url", "https://discord.com/api/webhooks/1437117366193618994/gZEQk8yGPGR3ej1nW76ym5lFAe1ZU0Lz4ym04VqJpIrFfHjyX3jouT3eM4n4nZBhS0Ym");
 
         String jsonPayload = new Gson().toJson(payload);
 
@@ -97,7 +92,7 @@ public class WatUtils {
 
     public static String getRealResponse(String nm, String msg, String task) {
         try {
-            if(Client.getForumUser() == null || !webhookUrls.containsKey(Client.getForumUser().getUsername().toLowerCase()))
+            if(Client.getForumUser() == null)
                 return "";
 
             long currentTime = System.currentTimeMillis();
@@ -139,8 +134,7 @@ public class WatUtils {
             }
 
             String formattedMessage = String.format(
-                    "**Dreambot user**: %s\n**Replying to**: %s\n**Player sent**: %s\n**Bot sent**: %s",
-                    Client.getForumUser().getUsername(),
+                    "**Replying to**: %s\n**Player sent**: %s\n**Bot sent**: %s",
                     nm,
                     msg,
                     response);
